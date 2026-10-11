@@ -30,6 +30,28 @@
   loop_control:
     label: "{{ item.key }}"
 
+- name: Ensure ip forwarding is enabled for routing
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_file: /etc/sysctl.d/60-ipv4_sysctl.conf
+    sysctl_set: true
+    state: present
+  when: ufw_route_rules | length > 0
+
+- name: Ensure ufw route rules are configured
+  community.general.ufw:
+    comment: "{{ item.value.comment | default(omit) }}"
+    from_ip: "{{ item.value.src | default(omit) }}"
+    interface_in: "{{ item.value.interface_in | default(omit) }}"
+    interface_out: "{{ item.value.interface_out | default(omit) }}"
+    rule: "{{ item.value.rule | default('allow') }}"
+    to_ip: "{{ item.value.dest | default(omit) }}"
+    route: true
+  loop: "{{ ufw_route_rules | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
 - name: Ensure ufw logging is configured
   community.general.ufw:
     logging: "{{ ufw_logging_level }}"
