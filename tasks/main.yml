@@ -22,10 +22,12 @@
 - name: Ensure ufw rules are configured
   community.general.ufw:
     comment: "{{ item.value.comment | default(omit) }}"
+    interface_in: "{{ item.value.interface_in | default(omit) }}"
     port: "{{ item.value.port }}"
     proto: "{{ item.value.proto | default(omit) }}"
     rule: "{{ item.value.rule | default('allow') }}"
     src: "{{ item.value.src | default(omit) }}"
+    to_ip: "{{ item.value.dest | default(omit) }}"
   loop: "{{ ufw_rules | ansible.builtin.dict2items }}"
   loop_control:
     label: "{{ item.key }}"

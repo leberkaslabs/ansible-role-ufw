@@ -13,6 +13,10 @@ ufw_rules:
   #   port: 443
   #   proto: tcp
   #   comment: Allow HTTPS
+  # dns:
+  #   port: 53
+  #   interface_in: wg0
+  #   comment: Allow DNS from WireGuard clients
 
 # Firewall rules for forwarded traffic
 ufw_route_rules: {}
