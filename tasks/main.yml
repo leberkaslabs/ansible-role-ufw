@@ -1,0 +1,39 @@
+---
+- name: Ensure ufw is installed
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+
+- name: Ensure ufw service is configured
+  ansible.builtin.systemd_service:
+    name: ufw
+    enabled: true
+    masked: false
+    state: started
+
+- name: Ensure ufw default policies are configured
+  community.general.ufw:
+    default: "{{ item.value }}"
+    direction: "{{ item.key }}"
+  loop: "{{ ufw_default_policies | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}: {{ item.value }}"
+
+- name: Ensure ufw rules are configured
+  community.general.ufw:
+    comment: "{{ item.value.comment | default(omit) }}"
+    port: "{{ item.value.port }}"
+    proto: "{{ item.value.proto | default(omit) }}"
+    rule: "{{ item.value.rule | default('allow') }}"
+    src: "{{ item.value.src | default(omit) }}"
+  loop: "{{ ufw_rules | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Ensure ufw logging is configured
+  community.general.ufw:
+    logging: "{{ ufw_logging_level }}"
+
+- name: Ensure ufw is enabled
+  community.general.ufw:
+    state: enabled

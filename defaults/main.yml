@@ -1,0 +1,26 @@
+---
+# Firewall rules for incoming traffic
+ufw_rules:
+  ssh:
+    port: 22
+    proto: tcp
+    comment: Allow SSH
+  # http:
+  #   port: 80
+  #   proto: tcp
+  #   comment: Allow HTTP
+  # https:
+  #   port: 443
+  #   proto: tcp
+  #   comment: Allow HTTPS
+
+# Default policies for traffic not matched by any rule
+ufw_default_policies:
+  # CIS 4.1.3 Ensure ufw default deny firewall policy (incoming)
+  incoming: deny
+  outgoing: allow
+  # CIS 4.1.5 Ensure ufw default deny firewall policy (routed)
+  routed: deny
+
+# UFW logging level
+ufw_logging_level: medium

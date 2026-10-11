@@ -1,0 +1,36 @@
+---
+name: Ansible Molecule
+
+'on':
+  push:
+    branches:
+      - main
+
+jobs:
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: molecule-debian-12
+          - image: molecule-debian-13
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Install Python dependencies
+        run: pip3 install -r requirements.txt
+
+      - name: Run Molecule
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          IMAGE: ${{ matrix.image }}

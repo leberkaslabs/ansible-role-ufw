@@ -1,0 +1,41 @@
+---
+argument_specs:
+  main:
+    author: Niclas Spreng
+    description: Install and configure uncomplicated firewall.
+    short_description: ufw
+    options:
+      ufw_rules:
+        type: dict
+        description: Firewall rules for incoming traffic.
+      ufw_default_policies:
+        type: dict
+        description: Default policies for traffic not matched by any rule.
+        options:
+          incoming:
+            type: str
+            choices:
+              - allow
+              - deny
+              - reject
+            default: deny
+            description: Default policy for incoming traffic.
+          outgoing:
+            type: str
+            choices:
+              - allow
+              - deny
+              - reject
+            default: allow
+            description: Default policy for outgoing traffic.
+          routed:
+            type: str
+            choices:
+              - allow
+              - deny
+              - reject
+            default: deny
+            description: Default policy for routed traffic.
+      ufw_logging_level:
+        type: str
+        description: UFW logging level

@@ -1,0 +1,18 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Niclas Spreng
+  description: Install and configure uncomplicated firewall.
+  license: MIT
+  min_ansible_version: "2.15"
+  namespace: leberkaslabs
+  role_name: ufw
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+        - trixie
+
+  galaxy_tags: []

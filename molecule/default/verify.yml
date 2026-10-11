@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Check the ufw status
+      ansible.builtin.command:
+        cmd: ufw status verbose
+      changed_when: false
+      register: ufw_status
+
+    - name: Show the ufw status
+      ansible.builtin.debug:
+        var: ufw_status.stdout_lines
